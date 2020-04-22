@@ -1,0 +1,73 @@
+爬虫过程：访问站点；定位所需的信息；得到并处理信息
+常用库：Request, BeautifulSoup, urllib
+进阶：requests.post
+import requests
+def translate(word):
+    url="http://fy.iciba.com/ajax.php?a=fy"
+
+    data={
+        'f': 'auto',
+        't': 'auto',
+        'w': word,
+    }
+    
+    headers={
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+    }#User-Agent会告诉网站服务器，访问者是通过什么工具来请求的，如果是爬虫请求，一般会拒绝，如果是用户浏览器，就会应答。
+    response = requests.post(url,data=data,headers=headers)     #发起请求
+    json_data=response.json()   #获取json数据
+    #print(json_data)
+    return json_data
+    
+def run(word):    
+    result = translate(word)['content']['out']   
+    print(result)
+    return result
+
+def main():
+    with open('zon_of_python.txt') as f:
+        zh = [run(word) for word in f]
+
+    with open('zon_of_python_zh-CN.txt', 'w') as g:
+        for i in zh:
+            g.write(i + '\n')
+            
+if __name__ == '__main__':
+    main()
+使用api
+import requests
+
+def getUrl(*address):
+    ak = ''  ## 填入你的api key
+    if len(address) < 1:
+        return None
+    else:
+        for add in address:   
+            url = 'http://api.map.baidu.com/geocoding/v3/?address={0}&output=json&ak={1}'.format(add,ak)  
+            yield url
+            
+
+def getPosition(url):
+    '''返回经纬度信息'''
+    res = requests.get(url)
+    #print(res.text)
+    json_data = eval(res.text)
+    
+    if json_data['status'] == 0:
+        lat = json_data['result']['location']['lat'] #纬度
+        lng = json_data['result']['location']['lng'] #经度
+    else:
+        print("Error output!")
+        return json_data['status']
+    return lat,lng
+
+if __name__ == "__main__":
+    address = ['北京市清华大学','北京市北京大学','保定市华北电力大学','上海市复旦大学','武汉市武汉大学']
+    for add in address:
+        add_url = list(getUrl(add))[0]
+        print('url:', add_url)
+        try:
+            lat,lng = getPosition(add_url)
+            print("{0}|经度:{1}|纬度:{2}.".format(add,lng,lat))
+        except Error as e:
+            print(e)
