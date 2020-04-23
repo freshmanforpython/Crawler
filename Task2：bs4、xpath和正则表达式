@@ -1,0 +1,19 @@
+2.1 BeautifulSoup：BeautifulSoup 是一个HTML/XML 的解析器，主要用于解析和提取 HTML/XML 数据
+2.1.1 Beautiful Soup库的理解： Beautiful Soup库是解析、遍历、维护“标签树”的功能库，对应一个HTML/XML文档的全部内容
+2.1.2 BeautifulSoup类的基本元素:
+Tag 标签，最基本的信息组织单元，分别用<>和</>标明开头和结尾；
+Name 标签的名字，<p>…</p>的名字是'p'，格式：<tag>.name;
+Attributes 标签的属性，字典形式组织，格式：<tag>.attrs;
+NavigableString 标签内非属性字符串，<>…</>中字符串，格式：<tag>.string;
+Comment 标签内字符串的注释部分，一种特殊的Comment类型;
+导入库：
+import requests
+from bs4 import BeautifulSoup
+import bs4
+#从网络上获取大学排名网页内容
+url='http://www.zuihaodaxue.cn/zuihaodaxuepaiming2019.html'
+r=requests.get(url)
+schools=r.text
+print(schools)
+2.1.3 html的基本结构
+2.1.4 html的遍历
