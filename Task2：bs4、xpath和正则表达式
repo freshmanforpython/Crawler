@@ -27,3 +27,13 @@ for school in soup.find_all("tr","alt"):
         detaillist.append(detail.text)
     schoollist.append([detaillist[0],detaillist[1],detaillist[3]])
 schoollist[0:31]
+2.2 xpath
+2.2.1 学习xpath，使用lxml+xpath提取内容。
+2.2.2 使用xpath提取丁香园论坛的回复内容。
+2.2.3 抓取丁香园网页：http://www.dxy.cn/bbs/thread/626626#626626 
+#利用Xpath表达式获取user和content（完成xpath的语句）
+user = tree.xpath('//div[@class="auth"]/a/text()')#text()看作节点直接调用
+print(user)
+content = tree.xpath('//td[@class="postbody"]')#string(.)看作路径，需要.xpath二次“查询”
+print(content)
+2.3 学习正则表达式 re
